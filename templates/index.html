@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Language Recognition System</title>
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+section {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 45%;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Gesture Recognition Section */
+#video-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+    position: relative;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+/* Speech to Text Section */
+#speech-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#speech-btn:hover {
+    background-color: #45a049;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sign Language Recognition System</h1>
+    </header>
+
+    <main>
+        <!-- Section for OpenCV Capture and Hand Gesture Recognition -->
+        <section class="gesture-section">
+            <h2>Sign Language Recognition </h2>
+            <div id="video-container">
+                <!-- OpenCV video capture will be inserted here -->
+                <img src="{{ url_for('video_feed') }}" >
+            </div>
+            <p id="gesture-output"></p>
+        </section>
+
+        <!-- Section for Speech to Text Conversion -->
+        <section class="speech-section">
+            <h2>Speech to Text</h2>
+            <button id="speech-btn" onclick="startListening()">Convert Speech to Text</button>
+            <p id="output"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Sign Language Recognition System</p>
+    </footer>
+
+    <script>
+        // OpenCV Capture and Hand Gesture Recognition
+        // (You'll need to include the OpenCV library and your custom code here)
+
+        // Speech to Text Conversion
+        
+        const output = document.getElementById('output');
+
+        function startListening() {
+            const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                output.textContent = 'Listening...';
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                output.textContent = 'You said: ' + transcript;
+            };
+
+            recognition.onerror = function(event) {
+                output.textContent = 'Error occurred: ' + event.error;
+            };
+
+            recognition.onend = function() {
+                output.textContent += '...';
+            };
+
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
